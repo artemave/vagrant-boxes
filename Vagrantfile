@@ -44,7 +44,7 @@ Vagrant.configure(2) do |config|
   # Example for VirtualBox:
   #
   config.vm.provider "virtualbox" do |vb|
-    vb.memory = "2048"
+    vb.memory = "4096"
   end
   #
   # View the documentation for the provider you are using for more
@@ -61,17 +61,25 @@ Vagrant.configure(2) do |config|
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
-    # sudo apt-get update
+    apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+    echo "deb https://apt.dockerproject.org/repo ubuntu-vivid main" >> /etc/apt/sources.list.d/docker.list
+    curl -L https://github.com/docker/compose/releases/download/1.4.1/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+    chmod +x /usr/local/bin/docker-compose
+
+    sudo apt-get update
     sudo apt-get install -y \
-      docker.io \
+      docker-engine \
       tree \
       tmux \
       git \
+      direnv \
+      exuberant-ctags \
+      htop \
       zsh
 
     # vim +lua +ruby +python +perl
     sudo apt-get remove -y --purge vim vim-runtime vim-gnome vim-tiny vim-common vim-gui-common
-    sudo apt-get install liblua5.1-dev luajit libluajit-5.1 python-dev ruby-dev libperl-dev libncurses5-dev
+    sudo apt-get install -y liblua5.1-dev luajit libluajit-5.1 python-dev ruby-dev libperl-dev libncurses5-dev
     sudo mkdir /usr/include/lua5.1/include
     sudo mv /usr/include/lua5.1/*.h /usr/include/lua5.1/include/
     git clone https://github.com/b4winckler/vim.git
