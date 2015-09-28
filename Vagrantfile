@@ -44,7 +44,7 @@ Vagrant.configure(2) do |config|
   # Example for VirtualBox:
   #
   config.vm.provider "virtualbox" do |vb|
-    vb.memory = "4096"
+    vb.memory = "6144"
   end
   #
   # View the documentation for the provider you are using for more
@@ -75,7 +75,11 @@ Vagrant.configure(2) do |config|
       direnv \
       exuberant-ctags \
       htop \
-      zsh
+      zsh \
+      tig \
+      nodejs \ # this and below are only needed for everybody.voting development
+      npm \
+      postgresql-client
 
     # vim +lua +ruby +python +perl
     sudo apt-get remove -y --purge vim vim-runtime vim-gnome vim-tiny vim-common vim-gui-common
