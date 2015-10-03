@@ -28,6 +28,13 @@ Vagrant.configure(2) do |config|
   # using a specific IP.
   config.vm.network "private_network", ip: "192.168.33.10"
 
+  # XQuartz on OSX plus xauth inside vm gives me OSX clipboard intergration
+  config.ssh.forward_x11 = true
+
+  # this is only because I chose not to use default vagrant user (for some reasons)
+  config.ssh.username = 'artem'
+  config.ssh.private_key_path = '~/.ssh/id_rsa'
+
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
   # your network.
@@ -73,6 +80,7 @@ Vagrant.configure(2) do |config|
       tmux \
       git \
       direnv \
+      silversearcher-ag \
       exuberant-ctags \
       htop \
       zsh \
@@ -83,12 +91,14 @@ Vagrant.configure(2) do |config|
 
     # vim +lua +ruby +python +perl
     sudo apt-get remove -y --purge vim vim-runtime vim-gnome vim-tiny vim-common vim-gui-common
-    sudo apt-get install -y liblua5.1-dev luajit libluajit-5.1 python-dev ruby-dev libperl-dev libncurses5-dev
+    sudo apt-get install -y liblua5.1-dev luajit libluajit-5.1 python-dev ruby-dev libperl-dev libncurses5-dev \
+      libx11-dev libxtst-dev libxt-dev libsm-dev libxpm-dev xauth xclip
     sudo mkdir /usr/include/lua5.1/include
     sudo mv /usr/include/lua5.1/*.h /usr/include/lua5.1/include/
-    git clone https://github.com/b4winckler/vim.git
+    git clone https://github.com/vim/vim.git
     cd vim
     ./configure --with-features=huge \
+                --with-x \
                 --enable-rubyinterp \
                 --enable-largefile \
                 --disable-netbeans \
@@ -96,7 +106,6 @@ Vagrant.configure(2) do |config|
                 --enable-perlinterp \
                 --enable-luainterp \
                 --with-luajit \
-                --without-x --disable-gui  \
                 --enable-fail-if-missing \
                 --with-lua-prefix=/usr/include/lua5.1 \
                 --enable-cscope \
