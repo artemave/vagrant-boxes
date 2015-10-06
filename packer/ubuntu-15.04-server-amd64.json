@@ -5,7 +5,8 @@
     "AWS_ACCESS_KEY_ID": "{{env `AWS_ACCESS_KEY_ID`}}",
     "AWS_SECRET_ACCESS_KEY": "{{env `AWS_SECRET_ACCESS_KEY`}}",
     "PACKER_ATLAS_TOKEN": "{{env `PACKER_ATLAS_TOKEN`}}",
-    "PACKER_ATLAS_VERSION": ""
+    "PACKER_ATLAS_VERSION": "",
+    "DISK_SIZE": "102400"
   },
   "builders": [
     {
@@ -36,7 +37,7 @@
       ],
       "boot_wait": "10s",
       "headless": true,
-      "disk_size": 205140,
+      "disk_size": "{{ user `DISK_SIZE` }}",
       "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
       "guest_os_type": "Ubuntu_64",
       "http_directory": "http",
@@ -85,7 +86,7 @@
       ],
       "boot_wait": "10s",
       "headless": true,
-      "disk_size": 205140,
+      "disk_size": "{{ user `DISK_SIZE` }}",
       "guest_os_type": "ubuntu-64",
       "http_directory": "http",
       "iso_checksum": "6501c8545374665823384bbb6235f865108f56d8a30bbf69dd18df73c14ccb84",
