@@ -32,8 +32,9 @@ Vagrant.configure(2) do |config|
   config.ssh.forward_x11 = true
 
   # this is only because I chose not to use default vagrant user (for some reasons)
-  config.ssh.username = 'artem'
-  config.ssh.private_key_path = '~/.ssh/id_rsa'
+  if ARGV[0] == 'ssh'
+    config.ssh.username = ENV['USER']
+  end
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
@@ -51,7 +52,7 @@ Vagrant.configure(2) do |config|
   # Example for VirtualBox:
   #
   config.vm.provider "virtualbox" do |vb|
-    vb.memory = "6144"
+    vb.memory = "8192"
   end
   #
   # View the documentation for the provider you are using for more
@@ -67,5 +68,5 @@ Vagrant.configure(2) do |config|
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
-  config.vm.provision "shell", path: "provision.sh"
+  config.vm.provision "shell", path: "provision.sh", args: ENV['USER']
 end
